@@ -1,11 +1,19 @@
 package com.example;
 
-import lombok.Data;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -17,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.util.Arrays;
+import lombok.Data;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 /**
@@ -27,11 +38,20 @@ import java.util.Arrays;
  * @author Josh Long
  */
 @EnableConfigurationProperties
+@EnableSwagger2
 @SpringBootApplication
 public class BootifulBannersServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BootifulBannersServiceApplication.class, args);
+    }
+
+    @Bean
+    public Docket bootifulBannersApi() {
+      return new Docket(DocumentationType.SWAGGER_2)
+              .select()
+              .paths(PathSelectors.regex("/banner"))
+              .build();
     }
 }
 
